@@ -1,0 +1,48 @@
+import medpalm
+
+def summarize_conversation(conversation):
+    # Create a MedPALM document
+    doc = medpalm.Document()
+
+    # Add each turn of the conversation to the document
+    for turn in conversation:
+        speaker = turn["speaker"]
+        text = turn["text"]
+
+        # Create a new annotation for each turn
+        ann = medpalm.Annotation(speaker, text)
+        doc.add_annotation(ann)
+
+    # Summarize the document
+    summary = doc.summary()
+
+    return summary
+
+# Example conversation
+conversation = [
+    {
+        "speaker": "Dr. Smith",
+        "text": "Hello, I'm Dr. Smith. How can I help you today?"
+    },
+    {
+        "speaker": "Patient",
+        "text": "I've been having a headache for the past few days."
+    },
+    {
+        "speaker": "Dr. Smith", "text": "Tell me more about your headache."
+    },
+    {
+        "speaker": "Patient", "text": "It's a sharp pain on the right side of my head."
+    },
+    {
+        "speaker": "Dr. Smith", "text": "What else are you experiencing?"
+    },
+    {
+        "speaker": "Patient", "text": "I'm also feeling nauseous and dizzy."
+    }
+]
+
+# Summarize the conversation
+summary = summarize_conversation(conversation)
+
+print(summary)
