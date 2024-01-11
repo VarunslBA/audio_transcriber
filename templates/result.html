@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Processing Results</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2 class="mb-4">Audio Processing Results</h2>
+
+    <h4>Diarization and Transcription Results:</h4>
+    <ul id="resultsList"></ul>
+
+    <h4>Summary:</h4>
+    <div id="summary"></div>
+
+    <script>
+        // JavaScript to dynamically display results and summary
+        var diarizationResults = {{ diarization_results | tojson }};
+        var transcriptionResults = {{ transcription_results | tojson }};
+        var summaryText = "{{ summary_text }}";
+
+        var resultsList = document.getElementById('resultsList');
+        var summaryDiv = document.getElementById('summary');
+
+        for (var i = 0; i < diarizationResults.length; i++) {
+            var diarizationEntry = diarizationResults[i];
+            var transcriptionEntry = transcriptionResults[i];
+
+            var listItem = document.createElement('li');
+            listItem.innerHTML = "<strong>File:</strong> " + transcriptionEntry.filename + "<br>" +
+                                "<strong>Timestamp:</strong> " + diarizationEntry.start_time + "s - " + diarizationEntry.end_time + "s<br>" +
+                                "<strong>Speaker:</strong> " + diarizationEntry.speaker_id + "<br>" +
+                                "<strong>Detected Language:</strong> " + transcriptionEntry.detected_language + "<br>" +
+                                "<strong>Transcript:</strong> " + transcriptionEntry.transcript + "<br><br>";
+
+            resultsList.appendChild(listItem);
+        }
+
+        // Display summary
+        var summaryParagraph = document.createElement('p');
+        summaryParagraph.innerHTML = "<strong>Summary:</strong> " + summaryText;
+        summaryDiv.appendChild(summaryParagraph);
+    </script>
+</div>
+
+</body>
+</html>
