@@ -11,33 +11,59 @@
 <div class="container mt-5">
     <h2 class="mb-4">Audio Processing Results</h2>
 
-    <h4>Diarization and Transcription Results:</h4>
-    <ul id="resultsList"></ul>
+    <h4>Combined Results:</h4>
+    <div id="resultsList"></div>
 
     <h4>Summary:</h4>
     <div id="summary"></div>
 
     <script>
-        // JavaScript to dynamically display results and summary
+        // JavaScript to dynamically display combined results and summary
         var diarizationResults = {{ diarization_results | tojson }};
         var transcriptionResults = {{ transcription_results | tojson }};
         var summaryText = "{{ summary_text }}";
 
-        var resultsList = document.getElementById('resultsList');
+        var resultsDiv = document.getElementById('resultsList');
         var summaryDiv = document.getElementById('summary');
+
+        // Combine results for a single speaker
+        var combinedResults = [];
+        var currentSpeaker = null;
+        var currentTranscript = '';
 
         for (var i = 0; i < diarizationResults.length; i++) {
             var diarizationEntry = diarizationResults[i];
             var transcriptionEntry = transcriptionResults[i];
 
-            var listItem = document.createElement('li');
-            listItem.innerHTML = "<strong>File:</strong> " + transcriptionEntry.filename + "<br>" +
-                                "<strong>Timestamp:</strong> " + diarizationEntry.start_time + "s - " + diarizationEntry.end_time + "s<br>" +
-                                "<strong>Speaker:</strong> " + diarizationEntry.speaker_id + "<br>" +
-                                "<strong>Detected Language:</strong> " + transcriptionEntry.detected_language + "<br>" +
-                                "<strong>Transcript:</strong> " + transcriptionEntry.transcript + "<br><br>";
+            if (currentSpeaker === null) {
+                currentSpeaker = diarizationEntry.speaker_id;
+                currentTranscript = transcriptionEntry.transcript;
+            } else if (currentSpeaker === diarizationEntry.speaker_id) {
+                currentTranscript += ' ' + transcriptionEntry.transcript;
+            } else {
+                combinedResults.push({
+                    speaker_id: currentSpeaker,
+                    transcript: currentTranscript.trim()
+                });
 
-            resultsList.appendChild(listItem);
+                currentSpeaker = diarizationEntry.speaker_id;
+                currentTranscript = transcriptionEntry.transcript;
+            }
+        }
+
+        // Add the last entry
+        combinedResults.push({
+            speaker_id: currentSpeaker,
+            transcript: currentTranscript.trim()
+        });
+
+        // Display combined results
+        for (var j = 0; j < combinedResults.length; j++) {
+            var resultParagraph = document.createElement('p');
+            resultParagraph.innerHTML =
+                `<strong>${combinedResults[j].speaker_id}:</strong> ${combinedResults[j].transcript}<br><br>`;
+
+            resultsDiv.appendChild(resultParagraph);
         }
 
         // Display summary

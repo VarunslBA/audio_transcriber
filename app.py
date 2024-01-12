@@ -61,7 +61,7 @@ def process():
         # Convert the combined results into a string
         conversation = ""
         for entry in combined_results:
-            conversation += f"Speaker {entry['speaker_id']}: {entry['transcript']}\n"
+            conversation += f"{entry['speaker_id']}: {entry['transcript']}\n"
 
         # Generate a summary
         summary = summarizer(conversation, max_length=150, min_length=50, length_penalty=2.0, num_beams=4)
