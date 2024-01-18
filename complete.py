@@ -1,6 +1,11 @@
 import diarizationspeaker
 import audiocrop
 import whisperaudio
+from transformers import pipeline
+
+
+# Load the summarization pipeline with the pre-trained model
+summarizer = pipeline("summarization", model="kabita-choudhary/finetuned-bart-for-conversation-summary")
 
 def combine_results(diarization_results, transcription_results):
     combined_results = []
@@ -40,7 +45,7 @@ def combine_results(diarization_results, transcription_results):
     return combined_results
 
 if __name__ == "__main__":
-    input_file_path = "Python_AI.mp3"
+    input_file_path = "audio/ttssample.mp3"
     output_folder_path = "cropped_audio"
 
     # Diarize audio
@@ -60,18 +65,17 @@ if __name__ == "__main__":
     whisperaudio.save_results(transcription_results, "transcription_results.json")
 
 
-    # # Print combined results
-    # for diarization_entry, transcription_entry in zip(diarization_results, transcription_results):
-    #     print(f"File: {transcription_entry['filename']}")
-    #     print(f"Timestamp: {diarization_entry['start_time']}s - {diarization_entry['end_time']}s")
-    #     print(f"Speaker: {diarization_entry['speaker_id']}")
-    #     print(f"Detected Language: {transcription_entry['detected_language']}")
-    #     print(f"Transcript: {transcription_entry['transcript']}")
-    #     print("\n")
-
-
 # Combine and print results
 combined_results = combine_results(diarization_results, transcription_results)
+
+# Convert the combined results into a string
+conversation = ""
+for entry in combined_results:
+    conversation += f"{entry['speaker_id']}: {entry['transcript']}\n"
+
+# Generate a summary
+summary = summarizer(conversation, max_length=150, min_length=50, length_penalty=2.0, num_beams=4)
+summary_text = summary[0]['summary_text']
 
 current_speaker = combined_results[0]['speaker_id']
 
@@ -82,6 +86,7 @@ for entry in combined_results:
     current_speaker = entry['speaker_id']
 
 print("\n")
+print(f"Summary: {summary_text}")
 #
 
 

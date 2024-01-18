@@ -12,7 +12,7 @@ def diarize_audio(input_audio):
     diarization = pipeline({'uri': 'input', 'audio': input_audio})
 
     # Create a mapping to replace speaker names
-    speaker_mapping = {'SPEAKER_00': 'Gernot', 'SPEAKER_01': 'Varun'}  # Replace with desired names
+    speaker_mapping = {'SPEAKER_00': 'Gernot', 'SPEAKER_01': 'Varun'}
 
     # Create a list to store tuples of time intervals, original speaker, new speaker, and transcript
     results = []
@@ -33,6 +33,9 @@ def diarize_audio(input_audio):
             'speaker_id': new_speaker_name
         })
 
+    # Sort the results based on start time
+    results.sort(key=lambda x: x['start_time'])
+
     return results
 
 def save_results(results, output_file):
@@ -45,3 +48,4 @@ if __name__ == "__main__":
 
     diarization_results = diarize_audio(input_audio_path)
     save_results(diarization_results, output_file_path)
+
