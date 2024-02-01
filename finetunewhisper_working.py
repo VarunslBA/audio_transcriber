@@ -18,10 +18,10 @@ from multiprocessing import Pool
 
 common_voice = DatasetDict()
 
-common_voice["train"] = load_dataset("mozilla-foundation/common_voice_11_0", "hi", split="train[:1000]+validation[:1000]", token="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")
-common_voice["test"] = load_dataset("mozilla-foundation/common_voice_11_0", "hi", split="test[:1000]", token="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")
-# common_voice["train"] = load_dataset("mozilla-foundation/common_voice_11_0", "hi", split="train+validation", token="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")
-# common_voice["test"] = load_dataset("mozilla-foundation/common_voice_11_0", "hi", split="test", token="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")
+common_voice["train"] = load_dataset("mozilla-foundation/common_voice_11_0", "hi", split="train[:1000]+validation[:1000]", token="")
+common_voice["test"] = load_dataset("mozilla-foundation/common_voice_11_0", "hi", split="test[:1000]", token="")
+# common_voice["train"] = load_dataset("mozilla-foundation/common_voice_11_0", "hi", split="train+validation", token="")
+# common_voice["test"] = load_dataset("mozilla-foundation/common_voice_11_0", "hi", split="test", token="")
 
 #print(common_voice)
 
