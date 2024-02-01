@@ -5,7 +5,7 @@ def diarize_audio(input_audio):
     # Load pretrained pipeline
     pipeline = SpeakerDiarization.from_pretrained(
         "pyannote/speaker-diarization-3.1",
-        use_auth_token="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"
+        use_auth_token=""
     )
 
     # Apply pretrained pipeline
