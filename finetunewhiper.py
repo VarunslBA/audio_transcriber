@@ -19,10 +19,10 @@ import os
 
 common_voice = DatasetDict()
 
-common_voice["train"] = load_dataset("mozilla-foundation/common_voice_11_0", "hi", split="train[:10]+validation[:10]", token="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")
-common_voice["test"] = load_dataset("mozilla-foundation/common_voice_11_0", "hi", split="test[:10]", token="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")
-# common_voice["train"] = load_dataset("mozilla-foundation/common_voice_11_0", "hi", split="train+validation", token="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")
-# common_voice["test"] = load_dataset("mozilla-foundation/common_voice_11_0", "hi", split="test", token="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")
+common_voice["train"] = load_dataset("mozilla-foundation/common_voice_11_0", "hi", split="train[:10]+validation[:10]", token="")
+common_voice["test"] = load_dataset("mozilla-foundation/common_voice_11_0", "hi", split="test[:10]", token="")
+# common_voice["train"] = load_dataset("mozilla-foundation/common_voice_11_0", "hi", split="train+validation", token="")
+# common_voice["test"] = load_dataset("mozilla-foundation/common_voice_11_0", "hi", split="test", token="")
 
 #print(common_voice)
 
