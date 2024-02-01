@@ -26,7 +26,7 @@ def combine_results(diarization_results, transcription_results):
                 'speaker_id': current_speaker,
                 'start_time': diarization_entry['start_time'],
                 'end_time': diarization_entry['end_time'],
-                'detected_language': transcription_entry['detected_language'],
+                # 'detected_language': transcription_entry['detected_language'],
                 'transcript': current_transcript.strip()
             })
 
@@ -38,14 +38,14 @@ def combine_results(diarization_results, transcription_results):
         'speaker_id': current_speaker,
         'start_time': diarization_results[-1]['start_time'],
         'end_time': diarization_results[-1]['end_time'],
-        'detected_language': transcription_results[-1]['detected_language'],
+        #'detected_language': transcription_results[-1]['detected_language'],
         'transcript': current_transcript.strip()
     })
 
     return combined_results
 
 if __name__ == "__main__":
-    input_file_path = "audio/ttssample.mp3"
+    input_file_path = "audio/Python_AI.mp3"
     output_folder_path = "cropped_audio"
 
     # Diarize audio
